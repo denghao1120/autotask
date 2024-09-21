@@ -46,7 +46,7 @@ def open_window(window_title):
         if window_title in t:
             window = pyautogui.getWindowsWithTitle(t)[0]
             window.activate()
-            return
+            return window
 
     print(f"未找到标题为'{window_title}'的窗口。")
 
@@ -61,7 +61,8 @@ def open_window_use_image(image_path):
 
 
 if __name__ == "__main__":
-    open_window("大话西游")
+    win = open_window("大话西游")
+    print(win)
     # 打开任务窗口
     click_button("button/task_butten.png")
     # 关闭任务窗口

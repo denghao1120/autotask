@@ -11,33 +11,6 @@ import pyautogui
 from find_button import open_window
 
 
-# pyautogui.hotkey("alt", "tab")
-#
-#
-# def get_map_size():
-#     map1 = pyautogui.locateOnScreen("image/map.png", confidence=0.6)
-#     return map1.width, map1.height
-#
-#
-# def get_map_original_point(height):
-#     map1 = pyautogui.locateOnScreen("image/title.png", confidence=0.6)
-#     top = map1.top + map1.height
-#     x = map1.left
-#     y = top + height
-#     return x, y
-
-
-# width, height = get_map_size()
-
-
-# def addressing(x, y):
-#     ox, oy = get_map_original_point(height)
-#     pyautogui.moveTo(ox + x, oy - y)
-
-
-# addressing(100, 200)
-
-
 def open_map():
     pyautogui.hotkey("alt", "1")
 
@@ -66,17 +39,24 @@ def get_map_original_point():
     return title.left, bottom.top
 
 
-def move_to(x, y):
+def move_to(x, y, map_max_y):
     """
     移动到地图指定坐标，坐标和像素的比例  1:4
     :param x:
     :param y:
+    :param map_max_y: 真实地图实际Y的最大值
     :return:
     """
-    ox, oy = get_map_original_point()
-    print(ox, oy)
-    pyautogui.moveTo(ox + x * 3.8, oy - y * 3.7)
+    title = get_title_location()
+    bottom = get_bottom_location()
+
+    map_height = bottom.top - title.top - title.height  # 计算地图实际高度
+
+    t = map_height / map_max_y  # 计算一个坐标值对应多少像素
+
+    ox, oy = title.left, bottom.top
+    pyautogui.moveTo(ox + x * t, oy - y * t)
 
 
 if __name__ == "__main__":
-    move_to(99, 22)
+    move_to(200, 100,  240)

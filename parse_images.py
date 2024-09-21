@@ -13,9 +13,10 @@ def get_curtime(time_format="%Y-%m-%d %H:%M:%S"):
     return curTime
 
 
-def ocr_img_text(path="", saving=False):
+def ocr_img_text(window, path="", saving=False):
     '''
     图像文字识别
+    :param window: 指定需要截图的窗口
     :param path:图片路径
     :return:result
     '''
@@ -23,7 +24,10 @@ def ocr_img_text(path="", saving=False):
 
     # 图片路径为空就默认获取屏幕截图
     if image == "":
-        image = screenshot()  # 使用pyautogui进行截图操作
+        if window is not None:
+            image = custom_screenshot(window)  # 使用pyautogui进行截图操作
+        else:
+            image = screenshot()  # 使用pyautogui进行截图操作
         image = np.array(image)
     else:
         # 不为空就打开
@@ -61,6 +65,9 @@ def get_location(data_info, text):
     return None
 
 
+
+
+
 def get_centre(info, target_text):
     '''
     计算文本按钮的中心坐标
@@ -82,11 +89,15 @@ def get_centre(info, target_text):
     return x, y
 
 
+def custom_screenshot(window):
+    return pyautogui.screenshot(region=window.box)
+
+
 if __name__ == "__main__":
     result = ocr_img_text()
-    aa = get_location(result[0], "灵钧先生")
+    aa = get_location(result[0], "猪八戒")
     print(aa)
-    centre = get_centre(aa, "灵钧先生")
+    centre = get_centre(aa, "猪八戒")
     print(centre)
     pyautogui.click(centre[0], centre[1], duration=0.5)
     # print(result, aa, centre)
